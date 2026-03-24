@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Adicione isso para garantir que o fundo do site mude */
+body {
+    @apply bg-gray-50;
+}
