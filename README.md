@@ -6,7 +6,7 @@ Este projeto é uma **Single Page Application (SPA)** desenvolvida em **React** 
 
 ## 🚀 Demonstração
 
-* **Link do Deploy (Vercel):** [CLIQUE AQUI PARA ACESSAR](https://gestao-estoque-faturamento.vercel.app)
+* **Link do Deploy (Vercel):** [Clique aqui para acessar](https://gestao-estoque-faturamento.vercel.app)
 * **Repositório:** [https://github.com/Contarim/Gestao-Estoque-Faturamento](https://github.com/Contarim/Gestao-Estoque-Faturamento)
 
 ---
@@ -80,5 +80,5 @@ A estrutura foi organizada seguindo boas práticas de separação de responsabil
 O projeto foi configurado para rodar na **Vercel** com suporte a rotas do React Router. Foi utilizado um arquivo `vercel.json` para realizar o redirecionamento automático das requisições para o `index.html`, evitando erros 404 ao atualizar a página (F5).
 
 ---
-**Desenvolvido por João Contarim** 
-*Conecte-se comigo no [LinkedIn](https://linkedin.com/in/contarim)*
+**Desenvolvido por João Contarim**
+*Conecte-se comigo no [LinkedIn](https://www.linkedin.com/in/joao-contarim/)*
