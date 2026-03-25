@@ -48,7 +48,8 @@ export default function Produto() {
   if (loading) return <div className="mt-24 text-center font-bold text-blue-600 animate-pulse">Carregando produtos...</div>;
 
   return (
-    <main className="mt-24 container mx-auto p-4">
+    // mt-32 md:mt-24: Dá mais espaço no topo para o Header empilhado no mobile
+    <main className="mt-32 md:mt-24 container mx-auto p-4 pb-12">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
           <PackageSearch className="text-blue-600" /> Produtos Cadastrados
@@ -56,30 +57,49 @@ export default function Produto() {
         <input 
           type="text" 
           placeholder="Filtrar por nome ou grupo..." 
-          className="border p-2 rounded-lg w-full md:w-80 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
+          className="border p-3 rounded-xl w-full md:w-80 shadow-inner focus:ring-2 focus:ring-blue-500 outline-none transition-all"
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
         />
       </div>
 
-      <div className="overflow-x-auto bg-white rounded-xl shadow-lg border border-gray-100">
+      <div className="overflow-x-auto bg-white rounded-2xl shadow-lg border border-gray-100">
         <table className="w-full text-left border-collapse">
           <thead className="bg-gray-50 border-b">
             <tr>
-              {[
-                { label: 'Nome', key: 'nome' },
-                { label: 'Grupo', key: 'grupo' },
-                { label: 'Preço', key: 'precoVenda' },
-                { label: 'Estoque', key: 'quantidadeEstoque' }
-              ].map((column) => (
-                <th key={column.key} className="p-4 cursor-pointer hover:bg-gray-100 transition" onClick={() => handleSort(column.key)}>
-                  <div className="flex items-center gap-1 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                    {column.label}
-                    {sortConfig.key === column.key && (sortConfig.direction === 'asc' ? <ChevronUp size={14}/> : <ChevronDown size={14}/>)}
-                  </div>
-                </th>
-              ))}
-              <th className="p-4 text-xs font-bold text-gray-500 uppercase text-center">Ações</th>
+              {/* Coluna Nome - Principal (sempre visível) */}
+              <th className="p-4 cursor-pointer hover:bg-gray-100 transition" onClick={() => handleSort('nome')}>
+                <div className="flex items-center gap-1 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Nome
+                  {sortConfig.key === 'nome' && (sortConfig.direction === 'asc' ? <ChevronUp size={14}/> : <ChevronDown size={14}/>)}
+                </div>
+              </th>
+
+              {/* Coluna Grupo - md:table-cell (oculta no mobile) */}
+              <th className="p-4 cursor-pointer hover:bg-gray-100 transition hidden md:table-cell" onClick={() => handleSort('grupo')}>
+                <div className="flex items-center gap-1 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Grupo
+                  {sortConfig.key === 'grupo' && (sortConfig.direction === 'asc' ? <ChevronUp size={14}/> : <ChevronDown size={14}/>)}
+                </div>
+              </th>
+
+              {/* Coluna Preço - Ajuste md:table-cell para ocultar o th no mobile */}
+              <th className="p-4 cursor-pointer hover:bg-gray-100 transition hidden md:table-cell" onClick={() => handleSort('precoVenda')}>
+                <div className="flex items-center gap-1 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Preço
+                  {sortConfig.key === 'precoVenda' && (sortConfig.direction === 'asc' ? <ChevronUp size={14}/> : <ChevronDown size={14}/>)}
+                </div>
+              </th>
+
+              {/* Coluna Estoque - md:table-cell (oculta no mobile) */}
+              <th className="p-4 cursor-pointer hover:bg-gray-100 transition hidden md:table-cell" onClick={() => handleSort('quantidadeEstoque')}>
+                <div className="flex items-center gap-1 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Estoque
+                  {sortConfig.key === 'quantidadeEstoque' && (sortConfig.direction === 'asc' ? <ChevronUp size={14}/> : <ChevronDown size={14}/>)}
+                </div>
+              </th>
+              
+              <th className="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -90,22 +110,39 @@ export default function Produto() {
                 else if (prod.quantidadeEstoque <= 10) statusClasses = "bg-amber-100 text-amber-700";
 
                 return (
-                  // A KEY AQUI É O SEGREDO: prod.id agora é sempre único
                   <tr key={prod.id} className="border-b hover:bg-slate-50 transition">
-                    <td className="p-4 font-medium text-gray-800">{prod.nome}</td>
-                    <td className="p-4 text-gray-600">
+                    
+                    {/* Coluna Nome + Preço no Mobile */}
+                    <td className="p-4 font-medium text-gray-800">
+                      <div className="flex flex-col">
+                        <span>{prod.nome}</span>
+                        {/* Preço aparece aqui no mobile, oculto no desktop */}
+                        <span className="text-sm font-bold text-blue-600 md:hidden mt-1">
+                          R$ {prod.precoVenda?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                        </span>
+                      </div>
+                    </td>
+
+                    {/* Coluna Grupo - Oculta no Mobile */}
+                    <td className="p-4 text-gray-600 hidden md:table-cell">
                       <span className="bg-gray-100 px-2 py-1 rounded text-xs font-semibold border border-gray-200">
                         {prod.nomeGrupo}
                       </span>
                     </td>
-                    <td className="p-4 font-bold text-blue-600">
+
+                    {/* Coluna Preço - Oculta no Mobile */}
+                    <td className="p-4 font-bold text-blue-600 hidden md:table-cell">
                       R$ {prod.precoVenda?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </td>
-                    <td className="p-4">
+
+                    {/* Coluna Estoque - Oculta no Mobile */}
+                    <td className="p-4 hidden md:table-cell">
                       <span className={`px-2 py-1 rounded-full text-xs font-bold ${statusClasses}`}>
                         {prod.quantidadeEstoque} un.
                       </span>
                     </td>
+
+                    {/* Coluna Ações - Sempre visível */}
                     <td className="p-4 flex justify-center gap-4">
                       <button onClick={() => navigate('/cadastro', { state: { item: prod } })} className="text-blue-500 hover:scale-110 transition-all">
                         <Pencil size={18}/>
